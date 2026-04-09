@@ -1,0 +1,434 @@
+# 量化策略工厂
+
+> **Quant Strategy Factory** - 策略快速开发回测平台  
+> 从策略创意到回测验证，只需 10 分钟
+
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
+![Backtest](https://img.shields.io/badge/backtest-engine-green.svg)
+
+---
+
+## 🎯 项目定位
+
+**量化策略工厂**是一个**策略研发基础设施**，帮助量化研究员：
+
+- ✅ **快速验证策略创意** - 从代码到回测结果，10 分钟内完成
+- ✅ **复用成熟策略模板** - 趋势/均值回归/套利/多因子，开箱即用
+- ✅ **自动化参数优化** - 网格搜索/贝叶斯优化，找到最优参数
+- ✅ **组合分析** - 多策略组合的夏普/相关性/容量分析
+
+**你不是在重复造轮子，而是在组装轮子。**
+
+---
+
+## 🏗️ 系统架构
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      策略工厂界面层                              │
+│   CLI 命令行  │  Web Dashboard  │  Jupyter Notebook  │  API    │
+└─────────────────────────────────────────────────────────────────┘
+                                ↕
+┌─────────────────────────────────────────────────────────────────┐
+│                      策略工厂核心层                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
+│  │ 策略模板库   │  │ 回测引擎     │  │ 参数优化器   │             │
+│  │ 20+ 策略模板  │  │ 向量化回测   │  │ 网格/贝叶斯  │             │
+│  └─────────────┘  └─────────────┘  └─────────────┘             │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
+│  │ 数据管理器   │  │ 组合分析器   │  │ 报告生成器   │             │
+│  │ 多数据源适配 │  │ 夏普/相关性  │  │ PDF/HTML    │             │
+│  └─────────────┘  └─────────────┘  └─────────────┘             │
+└─────────────────────────────────────────────────────────────────┘
+                                ↕
+┌─────────────────────────────────────────────────────────────────┐
+│                      数据源适配层                                │
+│   RQData  │  Tushare  │  Akshare  │  CTP  │  本地 CSV/Parquet  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🧪 策略模板库
+
+### 已实现策略
+
+| 策略类型 | 策略名称 | 代码 | 适用资产 |
+|---------|---------|------|---------|
+| **趋势跟踪** | 双均线交叉 | `DualMA` | 期货/股票 |
+| **趋势跟踪** | 通道突破 | `ChannelBreakout` | 期货 |
+| **趋势跟踪** | 海龟交易 | `TurtleTrader` | 期货 |
+| **均值回归** | 布林带均值回归 | `BollingerMR` | 期货/股票 |
+| **均值回归** | RSI 超买超卖 | `RSIMeanReversion` | 期货/股票 |
+| **动量策略** | 时间序列动量 | `TimeSeriesMomentum` | 多资产 |
+| **套利策略** | 期现套利 | `BasisArbitrage` | 期货 |
+| **套利策略** | 跨期套利 | `CalendarSpread` | 期货 |
+| **多因子** | 动量 + 价值 | `MomentumValue` | 股票 |
+
+### 策略模板结构
+
+每个策略模板包含：
+- ✅ 策略逻辑（入场/出场/止损/止盈）
+- ✅ 参数定义（可优化参数列表）
+- ✅ 示例配置（默认参数）
+- ✅ 单元测试（验证策略逻辑）
+
+---
+
+## ⚡ 快速开始
+
+### 1. 安装依赖
+
+```bash
+cd quant-strategy-factory
+pip install -r requirements.txt
+```
+
+### 2. 运行示例回测
+
+```bash
+# 使用双均线策略回测螺纹钢
+python -m src.backtest_runner \
+  --strategy DualMA \
+  --symbol RB \
+  --start 2024-01-01 \
+  --end 2024-12-31 \
+  --cash 1000000
+```
+
+### 3. 参数优化
+
+```bash
+# 网格搜索最优参数
+python -m src.optimizer \
+  --strategy DualMA \
+  --method grid \
+  --param fast_ma 5,10,15,20 \
+  --param slow_ma 30,40,50,60
+```
+
+### 4. Python API 调用
+
+```python
+from src.strategy_factory import StrategyFactory
+from src.backtest_engine import BacktestEngine
+
+# 创建策略实例
+factory = StrategyFactory()
+strategy = factory.create("DualMA", fast_ma=10, slow_ma=30)
+
+# 运行回测
+engine = BacktestEngine(strategy, initial_cash=1000000)
+results = engine.run("RB.SHF", "2024-01-01", "2024-12-31")
+
+# 查看结果
+print(f"年化收益：{results.annualized_return:.2f}%")
+print(f"夏普比率：{results.sharpe_ratio:.2f}")
+print(f"最大回撤：{results.max_drawdown:.2f}%")
+```
+
+---
+
+## 📊 回测报告示例
+
+```
+═══════════════════════════════════════════════════
+策略回测报告 - DualMA (螺纹钢)
+═══════════════════════════════════════════════════
+
+基本信息
+───────────────────────────────────────────────────
+策略名称：DualMA
+回测品种：RB.SHF (螺纹钢)
+回测周期：2024-01-01 ~ 2024-12-31
+初始资金：1,000,000
+手续费率：0.03%
+滑点：1 跳
+
+业绩指标
+───────────────────────────────────────────────────
+总收益率：45.67%
+年化收益：38.24%
+夏普比率：2.15
+索提诺比率：3.42
+最大回撤：-12.34%
+卡玛比率：3.10
+
+交易统计
+───────────────────────────────────────────────────
+总交易次数：156
+胜率：58.97%
+盈亏比：2.34
+平均持仓天数：5.2
+最长连亏：4 次
+
+风险指标
+───────────────────────────────────────────────────
+日 VaR(95%)：-2.34%
+日 VaR(99%)：-3.67%
+波动率：18.45%
+Beta：0.85
+```
+
+---
+
+## 🔧 核心功能
+
+### 1. 策略模板库
+
+```python
+# 查看所有可用策略
+from src.strategy_factory import StrategyFactory
+
+factory = StrategyFactory()
+print(factory.list_strategies())
+
+# 查看策略参数
+print(factory.get_params("DualMA"))
+
+# 创建策略实例
+strategy = factory.create("DualMA", fast_ma=10, slow_ma=30)
+```
+
+### 2. 回测引擎
+
+```python
+from src.backtest_engine import BacktestEngine
+
+engine = BacktestEngine(
+    strategy=strategy,
+    initial_cash=1000000,
+    commission_rate=0.0003,
+    slippage=1
+)
+
+results = engine.run(
+    symbol="RB.SHF",
+    start_date="2024-01-01",
+    end_date="2024-12-31"
+)
+```
+
+### 3. 参数优化
+
+```python
+from src.optimizer import Optimizer
+
+optimizer = Optimizer(strategy="DualMA")
+
+# 网格搜索
+best_params = optimizer.grid_search(
+    param_grid={
+        "fast_ma": [5, 10, 15, 20],
+        "slow_ma": [30, 40, 50, 60]
+    },
+    metric="sharpe_ratio"
+)
+
+# 贝叶斯优化
+best_params = optimizer.bayesian_optimize(
+    param_bounds={
+        "fast_ma": (5, 30),
+        "slow_ma": (20, 100)
+    },
+    n_iterations=50
+)
+```
+
+### 4. 组合分析
+
+```python
+from src.portfolio_analyzer import PortfolioAnalyzer
+
+analyzer = PortfolioAnalyzer()
+
+# 添加策略
+analyzer.add_strategy("DualMA", results_ma)
+analyzer.add_strategy("Turtle", results_turtle)
+analyzer.add_strategy("BollingerMR", results_boll)
+
+# 组合分析
+portfolio_results = analyzer.analyze()
+print(f"组合夏普：{portfolio_results.sharpe_ratio:.2f}")
+print(f"策略相关性：{portfolio_results.correlation_matrix}")
+```
+
+---
+
+## 📁 项目结构
+
+```
+quant-strategy-factory/
+├── src/
+│   ├── __init__.py
+│   ├── strategy_factory.py      # 策略工厂
+│   ├── backtest_engine.py       # 回测引擎
+│   ├── optimizer.py             # 参数优化器
+│   ├── portfolio_analyzer.py    # 组合分析器
+│   ├── report_generator.py      # 报告生成器
+│   │
+│   ├── strategies/              # 策略模板库
+│   │   ├── __init__.py
+│   │   ├── base.py              # 策略基类
+│   │   ├── dual_ma.py           # 双均线
+│   │   ├── turtle_trader.py     # 海龟交易
+│   │   ├── channel_breakout.py  # 通道突破
+│   │   ├── bollinger_mr.py      # 布林带均值回归
+│   │   └── ...
+│   │
+│   ├── data/                    # 数据管理
+│   │   ├── data_manager.py      # 数据管理器
+│   │   ├── rqdata_adapter.py    # RQData 适配
+│   │   ├── tushare_adapter.py   # Tushare 适配
+│   │   └── akshare_adapter.py   # Akshare 适配
+│   │
+│   └── utils/                   # 工具函数
+│       ├── metrics.py           # 业绩指标计算
+│       ├── plotting.py          # 可视化
+│       └── io.py                # 文件 IO
+│
+├── examples/                    # 示例代码
+│   ├── basic_backtest.py        # 基础回测
+│   ├── parameter_optimization.py # 参数优化
+│   └── portfolio_analysis.py    # 组合分析
+│
+├── tests/                       # 单元测试
+│   ├── test_strategies.py
+│   ├── test_backtest.py
+│   └── test_optimizer.py
+│
+├── config/                      # 配置文件
+│   ├── default_config.yaml
+│   └── data_sources.yaml
+│
+├── requirements.txt
+├── setup.py
+└── README.md
+```
+
+---
+
+## 🛠️ 技术栈
+
+| 模块 | 技术 |
+|------|------|
+| **核心** | Python 3.9+ / NumPy / Pandas |
+| **回测引擎** | 向量化回测 / 事件驱动回测 |
+| **数据源** | RQData / Tushare / Akshare / CTP |
+| **优化算法** | 网格搜索 / 贝叶斯优化 (Optuna) |
+| **可视化** | Matplotlib / Plotly / ECharts |
+| **报告生成** | Jinja2 / PDFKit |
+| **接口** | FastAPI (可选 Web Dashboard) |
+
+---
+
+## 🚀 开发路线图
+
+### Phase 1: 核心框架 (2 周)
+- [x] 项目初始化
+- [ ] 策略基类设计
+- [ ] 回测引擎核心
+- [ ] 数据管理器
+- [ ] 业绩指标计算
+
+### Phase 2: 策略模板 (2 周)
+- [ ] 双均线策略
+- [ ] 海龟交易策略
+- [ ] 通道突破策略
+- [ ] 布林带均值回归
+- [ ] RSI 超买超卖
+
+### Phase 3: 参数优化 (1 周)
+- [ ] 网格搜索
+- [ ] 贝叶斯优化 (Optuna)
+- [ ] 并行优化
+
+### Phase 4: 组合分析 (1 周)
+- [ ] 多策略组合
+- [ ] 相关性分析
+- [ ] 容量分析
+
+### Phase 5: Web 界面 (可选，2 周)
+- [ ] FastAPI 后端
+- [ ] Vue3 前端
+- [ ] 实时回测进度
+- [ ] 交互式图表
+
+---
+
+## 📝 使用场景
+
+### 场景 1：快速验证策略创意
+
+```python
+# 有一个新的策略想法？10 分钟验证
+from src import StrategyFactory, BacktestEngine
+
+factory = StrategyFactory()
+strategy = factory.create("MyNewStrategy", param1=10, param2=0.5)
+
+engine = BacktestEngine(strategy)
+results = engine.run("CU.SHF", "2023-01-01", "2024-12-31")
+
+if results.sharpe_ratio > 1.5:
+    print("✅ 策略有效，继续优化！")
+else:
+    print("❌ 策略无效，调整思路")
+```
+
+### 场景 2：参数优化
+
+```python
+# 找到最优参数
+from src import Optimizer
+
+optimizer = Optimizer(strategy="DualMA")
+best_params = optimizer.bayesian_optimize(
+    param_bounds={"fast_ma": (5, 30), "slow_ma": (20, 100)},
+    n_iterations=50
+)
+print(f"最优参数：{best_params}")
+```
+
+### 场景 3：策略组合
+
+```python
+# 多策略组合分析
+from src import PortfolioAnalyzer
+
+analyzer = PortfolioAnalyzer()
+analyzer.add_strategy("DualMA", results_ma)
+analyzer.add_strategy("Turtle", results_turtle)
+
+# 找到最优权重
+optimal_weights = analyzer.optimize_weights()
+print(f"最优配置：{optimal_weights}")
+```
+
+---
+
+## ⚠️ 注意事项
+
+1. **回测 ≠ 实盘** - 回测结果仅供参考，实盘需考虑滑点/冲击成本/流动性
+2. **过拟合风险** - 参数优化后务必进行样本外测试
+3. **数据质量** - 确保使用复权数据，注意除权除息
+4. **交易成本** - 手续费和滑点对高频策略影响显著
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 👨‍💻 作者
+
+**Coral** - 私募基金从业者
+
+> **理念**：好的工具让策略研发效率提升 10 倍。
+
+---
+
+*最后更新：2026-04-09*

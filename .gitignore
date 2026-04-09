@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+*.egg-info/
+dist/
+build/
+
+# Database
+*.db
+*.sqlite
+*.h5
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Data
+data/*.csv
+data/*.parquet
+data/*.pkl
+
+# Results
+results/
+backtest_results/
+optimized_params/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+.coverage
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
