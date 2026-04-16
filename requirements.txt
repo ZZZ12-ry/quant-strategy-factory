@@ -1,20 +1,41 @@
+# 核心依赖
 numpy>=1.21.0
 pandas>=1.3.0
 scipy>=1.7.0
+
+# 可视化
 matplotlib>=3.4.0
 plotly>=5.0.0
+
+# 报告生成
 jinja2>=3.0.0
 pyyaml>=5.4.0
+
+# 进度条
 tqdm>=4.62.0
 
-# 数据源（可选）
-# rqdatac>=3.4.0
-# tushare>=1.2.0
-# akshare>=1.8.0
+# 数据源（可选，根据需要安装）
+# rqdatac>=3.4.0      # 米筐数据
+# tushare>=1.2.0      # Tushare Pro
+# akshare>=1.8.0      # Akshare（免费）
 
-# 优化（可选）
-# optuna>=3.0.0
+# 参数优化（可选）
+# optuna>=3.0.0       # 贝叶斯优化
 
-# Web（可选）
+# Web 界面（可选）
 # fastapi>=0.100.0
 # uvicorn>=0.20.0
+
+# 机器学习（可选，用于 ML 因子挖掘）
+scikit-learn>=1.0.0       # 基础 ML 模型
+
+# 深度学习（可选，用于 LSTM/Transformer）
+# torch>=1.9.0            # PyTorch
+# tensorflow>=2.8.0       # TensorFlow（二选一）
+
+# 集成学习增强（可选）
+# xgboost>=1.5.0          # XGBoost
+# lightgbm>=3.3.0         # LightGBM
+
+# 参数优化（可选）
+optuna>=3.0.0             # 贝叶斯优化
