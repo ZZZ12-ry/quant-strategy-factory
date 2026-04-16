@@ -1,485 +1,451 @@
-# 量化策略工厂
+# 量化策略工厂 (Quant Strategy Factory)
 
-> **Quant Strategy Factory** - 策略快速开发回测平台  
-> 从策略创意到回测验证，只需 10 分钟
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://python.org)
+[![Strategies](https://img.shields.io/badge/strategies-24-green.svg)](docs/STRATEGY_LIST.md)
+[![Factors](https://img.shields.io/badge/factors-130+-orange.svg)](docs/USER_GUIDE.md)
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
-![Backtest](https://img.shields.io/badge/backtest-engine-green.svg)
+> **从策略创意到回测验证，只需 10 分钟**  
+> 一个完整的量化策略研发基础设施
 
 ---
 
-## 🎯 项目定位
+## 📖 项目简介
 
-**量化策略工厂**是一个**策略研发基础设施**，帮助量化研究员：
+**量化策略工厂**是一个专业的量化交易策略研发平台，帮助量化研究员和交易者：
 
 - ✅ **快速验证策略创意** - 从代码到回测结果，10 分钟内完成
-- ✅ **复用成熟策略模板** - 7 个经典策略，开箱即用
-- ✅ **自动化参数优化** - 网格搜索/贝叶斯优化，找到最优参数
-- ✅ **Monte Carlo 测试** - 压力测试防止过拟合
-- ✅ **组合分析** - 多策略组合的夏普/相关性/权重优化
-- ✅ **多数据源支持** - RQData/Tushare/Akshare/本地文件
+- ✅ **复用成熟策略模板** - 24 个经典策略，开箱即用
+- ✅ **AI 增强** - 机器学习 + 深度学习 + 因子自动挖掘
+- ✅ **专业风控** - 多层次止损 + 仓位管理 + 风险预警
+- ✅ **真实回测** - 手续费 + 滑点 + 冲击成本
+- ✅ **模拟交易** - 期货仿真账户 + 实时信号验证
 
 **你不是在重复造轮子，而是在组装轮子。**
+
+---
+
+## 🎯 核心特性
+
+### 1. 策略库 (24 个策略模板)
+
+| 类别 | 策略数 | 代表策略 |
+|------|--------|---------|
+| **趋势跟踪** | 6 | 双均线、海龟交易、通道突破 |
+| **均值回归** | 3 | 布林带回归、RSI 回归 |
+| **震荡策略** | 3 | KDJ 震荡、Awesome 震荡 |
+| **突破策略** | 2 | Dual Thrust、波动率突破 |
+| **套利策略** | 3 | 期现套利、跨期套利、配对交易 |
+| **多因子策略** | 2 | Barra 多因子、因子择时 |
+| **ML/DL 策略** | 3 | XGBoost、LSTM、强化学习 |
+| **成交量策略** | 2 | 成交量昼夜效应 |
+
+### 2. 因子库 (130+ 因子)
+
+```python
+# Barra 风格因子 (63 个)
+- Momentum (动量) - 10 个因子
+- Volatility (波动率) - 10 个因子
+- Liquidity (流动性) - 10 个因子
+- Value (价值) - 5 个因子
+- Quality (质量) - 5 个因子
+- Size (规模) - 5 个因子
+- ... (共 10 大类别)
+
+# 技术指标因子 (67 个)
+- MA/EMA 均线系统
+- MACD/RSI/KDJ指标
+- 布林带/ATR波动率
+- 成交量相关指标
+```
+
+### 3. AI 增强
+
+- ✅ **机器学习** - XGBoost/LightGBM/CatBoost
+- ✅ **深度学习** - LSTM/GRU/Transformer
+- ✅ **集成学习** - Stacking/Blending/Voting
+- ✅ **因子挖掘** - 遗传算法自动发现因子
+- ✅ **自动调参** - 贝叶斯优化
+
+### 4. 风控系统
+
+```python
+# 仓位管理
+max_single_position = 30%    # 单策略最大仓位
+max_total_position = 80%     # 总仓位上限
+min_cash_ratio = 20%         # 最小现金比例
+
+# 止损限制
+max_daily_loss = 5%          # 单日最大亏损
+max_drawdown = 20%           # 最大回撤
+stop_loss_per_trade = 3%     # 单笔止损
+
+# 风险等级
+LOW → MEDIUM → HIGH → EXTREME (强制平仓)
+```
+
+### 5. 真实回测
+
+- ✅ 手续费（万三）
+- ✅ 滑点（千一）
+- ✅ 冲击成本（大单加倍）
+- ✅ 真实成交模拟
+- ✅ 详细交易记录
+
+### 6. 样本外验证
+
+- ✅ 训练集/验证集/测试集分割
+- ✅ 滚动回测（Walk Forward）
+- ✅ 参数稳定性检验
+- ✅ 过拟合检测
+
+---
+
+## 🚀 快速开始
+
+### 1. 安装依赖
+
+```bash
+# 克隆仓库
+git clone https://github.com/ZZZ12-ry/quant-strategy-factory.git
+cd quant-strategy-factory
+
+# 安装核心依赖
+pip install -r requirements.txt
+
+# 安装机器学习（可选）
+pip install xgboost lightgbm catboost
+
+# 安装深度学习（可选）
+pip install torch torchvision
+```
+
+### 2. 一键演示
+
+```bash
+# 运行完整演示流程
+python run_full_demo.py
+```
+
+**演示内容包括**:
+1. 获取历史数据（带缓存）
+2. 批量回测（多品种）
+3. 样本外验证
+4. 模拟盘测试
+5. 生成报告
+
+### 3. 查看报告
+
+```bash
+# 回测报告
+open reports/backtest_report.html
+
+# 模拟盘报告
+open reports/simulated_trading_report.json
+```
+
+---
+
+## 💻 使用示例
+
+### 示例 1: 简单回测
+
+```python
+from src.strategy_factory import StrategyFactory
+from src.backtest.realistic_backtester import RealisticBacktester, TradingCosts
+
+# 创建策略
+factory = StrategyFactory()
+strategy = factory.create("DualMA", fast_ma=10, slow_ma=30)
+
+# 创建回测器
+backtester = RealisticBacktester(
+    initial_capital=1000000,
+    trading_costs=TradingCosts(
+        commission=0.0003,  # 万三
+        slippage=0.001,     # 千一
+        impact_cost=0.0005  # 万分五
+    )
+)
+
+# 获取数据
+import akshare as ak
+df = ak.futures_zh_daily_sina(symbol="RB2405")
+
+# 运行回测
+for idx, row in df.iterrows():
+    signal = strategy.on_bar(row)
+    if signal:
+        if signal.direction in ['long', 'short']:
+            backtester.execute_buy(signal.price, signal.volume)
+        else:
+            backtester.execute_sell(signal.price, signal.volume)
+
+# 查看绩效
+metrics = backtester.get_performance_metrics()
+print(f"总收益：{metrics['total_return']:.2f}%")
+print(f"夏普比率：{metrics['sharpe']:.2f}")
+print(f"最大回撤：{metrics['max_drawdown']:.2f}%")
+```
+
+### 示例 2: 多因子策略
+
+```python
+from src.strategies.multifactor_strategy_v2 import MultiFactorStrategyV2
+
+# 创建策略
+strategy = MultiFactorStrategyV2(
+    factor_weights={
+        'Momentum': 0.15,
+        'Volatility': 0.10,
+        'Liquidity': 0.15,
+        'Quality': 0.15,
+        'Value': 0.10,
+    },
+    rebalance_period=5  # 5 日调仓
+)
+
+# 运行策略
+for idx, row in df.iterrows():
+    signal = strategy.on_bar(row)
+    if signal:
+        print(f"{signal.timestamp}: {signal.direction} @ {signal.price}")
+```
+
+### 示例 3: 风控管理
+
+```python
+from src.risk.risk_manager import RiskManager, PositionLimits, LossLimits
+
+# 创建风控管理器
+risk_mgr = RiskManager(
+    initial_capital=1000000,
+    position_limits=PositionLimits(
+        max_single_position=0.30,
+        max_total_position=0.80
+    ),
+    loss_limits=LossLimits(
+        max_daily_loss=0.05,
+        max_drawdown=0.20
+    )
+)
+
+# 下单前检查
+if risk_mgr.check_position_limit(200000):
+    # 允许开仓
+    position = risk_mgr.get_allowed_position(signal_strength=0.8)
+    print(f"允许仓位：{position:,.0f}")
+
+# 检查是否强平
+if risk_mgr.should_close_all():
+    print("风控警告：强制平仓")
+```
+
+### 示例 4: 模拟交易
+
+```python
+from src.trading.simulated_account import SimulatedTradingAccount, OrderType, OrderSide
+
+# 创建模拟账户
+account = SimulatedTradingAccount(initial_capital=1000000)
+
+# 买入开仓
+order = account.submit_order(
+    symbol='RB2405',
+    side=OrderSide.BUY,
+    volume=10,
+    order_type=OrderType.MARKET
+)
+account.execute_order(order, market_price=4000)
+
+# 更新行情
+account.update_market_price('RB2405', 4100)
+
+# 平多仓
+order2 = account.submit_order(
+    symbol='RB2405',
+    side=OrderSide.CLOSE_LONG,
+    volume=10
+)
+account.execute_order(order2, market_price=4100)
+
+# 查看账户
+summary = account.get_account_summary()
+print(f"权益：{summary['equity']:,.0f}")
+print(f"收益：{summary['total_return']:.2f}%")
+```
+
+---
+
+## 📚 文档导航
+
+| 文档 | 说明 |
+|------|------|
+| [使用指南](docs/USER_GUIDE.md) | 完整使用教程 |
+| [策略列表](docs/STRATEGY_LIST.md) | 24 个策略详解 |
+| [安装指南](docs/INSTALL_GUIDE.md) | 依赖安装说明 |
+| [因子库文档](docs/ML_MULTIFACTOR_PROGRESS.md) | 130+ 因子说明 |
+| [风控系统](docs/RISK_BACKTEST_SUMMARY.md) | 风控规则详解 |
+| [模拟盘指南](docs/DATA_SIMULATION_SUMMARY.md) | 模拟交易教程 |
 
 ---
 
 ## 🏗️ 系统架构
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                      策略工厂界面层                              │
-│   CLI 命令行  │  Web Dashboard  │  Jupyter Notebook  │  API    │
-└─────────────────────────────────────────────────────────────────┘
-                                ↕
-┌─────────────────────────────────────────────────────────────────┐
-│                      策略工厂核心层                              │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
-│  │ 7 个策略模板  │  │ 回测引擎     │  │ 参数优化器   │             │
-│  │ 趋势/回归/震荡│  │ 向量化回测   │  │ 网格/贝叶斯  │             │
-│  └─────────────┘  └─────────────┘  └─────────────┘             │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
-│  │ Monte Carlo  │  │ 组合分析器   │  │ 报告生成器   │             │
-│  │ 压力测试     │  │ 夏普/相关性  │  │ PDF/HTML    │             │
-│  └─────────────┘  └─────────────┘  └─────────────┘             │
-└─────────────────────────────────────────────────────────────────┘
-                                ↕
-┌─────────────────────────────────────────────────────────────────┐
-│                      数据源适配层                                │
-│   RQData  │  Tushare  │  Akshare  │  本地 CSV/Parquet          │
-└─────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│              数据层                          │
+│  - 历史数据获取 (AKShare/Tushare)           │
+│  - 数据缓存 (避免重复获取)                   │
+└─────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────┐
+│              策略层                          │
+│  - 24 个策略模板                              │
+│  - 多因子策略 (Barra)                        │
+│  - ML/DL策略 (XGBoost/LSTM)                 │
+└─────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────┐
+│              风控层                          │
+│  - 仓位管理                                 │
+│  - 止损监控                                 │
+│  - 风险预警 (4 级)                           │
+└─────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────┐
+│              交易层                          │
+│  - 模拟账户                                 │
+│  - 订单管理                                 │
+│  - 持仓管理                                 │
+└─────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────┐
+│              验证层                          │
+│  - 真实回测 (含成本)                         │
+│  - 样本外验证 (滚动回测)                     │
+│  - 过拟合检测                               │
+└─────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🧪 策略模板库 (15 个)
+## 📊 代码统计
 
-### 已实现策略
-
-| 策略类型 | 策略名称 | 代码 | 适用资产 |
-|---------|---------|------|---------|
-| **趋势跟踪** | 双均线交叉 | `DualMA` | 期货/股票 |
-| **趋势跟踪** | 通道突破 | `ChannelBreakout` | 期货 |
-| **趋势跟踪** | 海龟交易 | `TurtleTrader` | 期货 |
-| **趋势跟踪** | MACD 趋势 | `MACDTrend` | 期货/股票 |
-| **趋势跟踪** | Aroon 趋势 | `AroonTrend` | 期货/股票 |
-| **趋势跟踪** | ADX 趋势 | `ADXTrend` | 期货/股票 |
-| **均值回归** | 布林带回归 | `BollingerMR` | 期货/股票 |
-| **均值回归** | RSI 回归 | `RSIMR` | 期货/股票 |
-| **均值回归** | Z-Score 回归 | `MeanReversion` | 期货/股票 |
-| **震荡策略** | KDJ 震荡 | `KDJ` | 期货/股票 |
-| **震荡策略** | Awesome 震荡 | `AwesomeOsc` | 期货/股票 |
-| **震荡策略** | Stochastic | `Stochastic` | 期货/股票 |
-| **突破策略** | Dual Thrust | `DualThrust` | 期货 |
-| **突破策略** | 波动率突破 | `VolatilityBreakout` | 期货/股票 |
-| **动量策略** | 动量排名 | `MomentumRank` | 多品种 |
-| **形态识别** | K 线形态 | `PatternRecognition` | 期货/股票 |
-
-### 策略模板结构
-
-每个策略模板包含：
-- ✅ 策略逻辑（入场/出场/止损/止盈）
-- ✅ 参数定义（可优化参数列表）
-- ✅ 示例配置（默认参数）
-
----
-
-## ⚡ 快速开始
-
-### 1. 安装依赖
-
-```bash
-cd quant-strategy-factory
-pip install -r requirements.txt
-```
-
-### 2. 运行示例回测
-
-```bash
-# 使用双均线策略回测螺纹钢
-python examples/advanced_backtest.py
-```
-
-### 3. Python API 调用
-
-```python
-from src.strategy_factory import StrategyFactory
-from src.backtest_engine import BacktestEngine
-
-# 创建策略实例
-factory = StrategyFactory()
-strategy = factory.create("DualMA", fast_ma=10, slow_ma=30)
-
-# 运行回测
-engine = BacktestEngine(strategy, initial_cash=1000000)
-results = engine.run(data, "RB.SHF")
-
-# 查看结果
-print(f"年化收益：{results.annualized_return:.2f}%")
-print(f"夏普比率：{results.sharpe_ratio:.2f}")
-print(f"最大回撤：{results.max_drawdown:.2f}%")
-```
-
----
-
-## 🔧 核心功能
-
-### 1. 策略模板库 (7 个策略)
-
-```python
-from src.strategy_factory import StrategyFactory
-
-factory = StrategyFactory()
-
-# 查看所有可用策略
-print(factory.list_strategies())
-# ['DualMA', 'TurtleTrader', 'ChannelBreakout', 'MACDTrend', 'BollingerMR', 'RSIMR', 'KDJ']
-
-# 创建策略实例
-strategy = factory.create("DualMA", fast_ma=10, slow_ma=30)
-```
-
-### 2. 数据源适配 (4 种数据源)
-
-```python
-from src.data.data_manager import DataManager
-
-# 使用 Akshare（免费）
-dm = DataManager(data_source="akshare")
-
-# 使用 RQData（米筐）
-# dm = DataManager(data_source="rqdata", username="xxx", password="xxx")
-
-# 使用 Tushare
-# dm = DataManager(data_source="tushare", token="xxx")
-
-# 使用本地文件
-# dm = DataManager(data_source="local", data_dir="./data")
-
-# 获取数据
-data = dm.get_bars(
-    symbol="RB.SHF",
-    start_date="2024-01-01",
-    end_date="2024-12-31"
-)
-```
-
-### 3. 回测引擎
-
-```python
-from src.backtest_engine import BacktestEngine
-
-engine = BacktestEngine(
-    strategy=strategy,
-    initial_cash=1000000,
-    commission_rate=0.0003,
-    slippage=1
-)
-
-results = engine.run(data, symbol="RB.SHF")
-```
-
-### 4. 参数优化 (网格搜索 + 贝叶斯优化)
-
-```python
-from src.optimizer import Optimizer
-
-optimizer = Optimizer(strategy_class=DualMAStrategy, metric="sharpe_ratio")
-
-# 网格搜索
-best_params, best_result = optimizer.grid_search(
-    param_grid={"fast_ma": [5, 10, 15], "slow_ma": [20, 30, 40]},
-    data=data,
-    symbol="RB.SHF"
-)
-
-# 贝叶斯优化（需要 optuna）
-best_params, best_result = optimizer.bayesian_optimize(
-    param_bounds={"fast_ma": (5, 30), "slow_ma": (20, 100)},
-    data=data,
-    symbol="RB.SHF",
-    n_iterations=50
-)
-```
-
-### 5. Monte Carlo 压力测试
-
-```python
-from src.monte_carlo import MonteCarloEngine
-
-mc_engine = MonteCarloEngine(strategy=strategy, num_simulations=500)
-mc_result = mc_engine.run(data, symbol="RB.SHF", method="both")
-
-print(f"原始夏普：{mc_result.original_sharpe:.2f}")
-print(f"模拟均值：{mc_result.mean_sharpe:.2f}")
-print(f"5 分位数：{mc_result.percentile_5:.2f}")
-print(f"稳健性评分：{mc_result.robustness_score:.2f}")
-print(f"策略稳健：{'是' if mc_result.is_robust() else '否'}")
-```
-
-### 6. 组合分析
-
-```python
-from src.portfolio_analyzer import PortfolioAnalyzer
-
-analyzer = PortfolioAnalyzer()
-
-# 添加策略
-analyzer.add_strategy("DualMA", results_ma)
-analyzer.add_strategy("Turtle", results_turtle)
-analyzer.add_strategy("BollingerMR", results_boll)
-
-# 优化权重
-optimal_weights = analyzer.optimize_weights(method="sharpe")
-
-# 组合分析
-portfolio_result = analyzer.analyze()
-print(f"组合夏普：{portfolio_result.portfolio_sharpe:.2f}")
-print(f"分散化比率：{portfolio_result.diversification_ratio:.2f}")
-```
-
-### 7. 报告生成
-
-```python
-from src.report_generator import ReportGenerator
-
-report_gen = ReportGenerator(output_dir="./reports")
-
-# 生成文本报告
-report = report_gen.generate_report(result, format="text")
-
-# 生成 HTML 报告
-report = report_gen.generate_report(result, format="html")
-
-# 生成 Markdown 报告
-report = report_gen.generate_report(result, format="markdown")
-
-# 保存到文件
-filepath = report_gen.save_report(result, strategy_name="DualMA", format="markdown")
-```
-
----
-
-## 📊 回测报告示例
-
-```
-═══════════════════════════════════════════════════
-策略回测报告 - DualMA (螺纹钢)
-═══════════════════════════════════════════════════
-
-基本信息
-───────────────────────────────────────────────────
-策略名称：DualMA
-回测品种：RB.SHF (螺纹钢)
-回测周期：2024-01-01 ~ 2024-12-31
-初始资金：1,000,000
-
-业绩指标
-───────────────────────────────────────────────────
-总收益率：45.67%
-年化收益：38.24%
-夏普比率：2.15
-最大回撤：-12.34%
-卡玛比率：3.10
-
-交易统计
-───────────────────────────────────────────────────
-总交易次数：156
-胜率：58.97%
-盈亏比：2.34
-```
-
----
-
-## 📁 项目结构
-
-```
-quant-strategy-factory/
-├── src/
-│   ├── __init__.py
-│   ├── strategy_factory.py      # 策略工厂
-│   ├── backtest_engine.py       # 回测引擎
-│   ├── optimizer.py             # 参数优化器
-│   ├── monte_carlo.py           # Monte Carlo 测试
-│   ├── portfolio_analyzer.py    # 组合分析器
-│   ├── report_generator.py      # 报告生成器
-│   │
-│   ├── strategies/              # 策略模板库
-│   │   ├── base.py              # 策略基类
-│   │   ├── dual_ma.py           # 双均线
-│   │   ├── turtle_trader.py     # 海龟交易
-│   │   ├── channel_breakout.py  # 通道突破
-│   │   ├── macd_trend.py        # MACD 趋势
-│   │   ├── bollinger_mr.py      # 布林带回归
-│   │   ├── rsi_mean_reversion.py # RSI 回归
-│   │   └── kdj_oscillator.py    # KDJ 震荡
-│   │
-│   ├── data/                    # 数据管理
-│   │   ├── data_manager.py      # 数据管理器
-│   │   ├── rqdata_adapter.py    # RQData 适配
-│   │   ├── tushare_adapter.py   # Tushare 适配
-│   │   ├── akshare_adapter.py   # Akshare 适配
-│   │   └── local_adapter.py     # 本地文件适配
-│   │
-│   └── utils/                   # 工具函数
-│       ├── metrics.py           # 业绩指标计算
-│       └── plotting.py          # 可视化
-│
-├── examples/                    # 示例代码
-│   ├── basic_backtest.py        # 基础回测
-│   ├── advanced_backtest.py     # 高级回测（完整功能）
-│   └── ml_factor_mining.py      # ML 因子挖掘
-│
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 🛠️ 技术栈
-
-| 模块 | 技术 |
+| 指标 | 数量 |
 |------|------|
-| **核心** | Python 3.9+ / NumPy / Pandas |
-| **回测引擎** | 向量化回测 |
-| **数据源** | RQData / Tushare / Akshare / 本地文件 |
-| **优化算法** | 网格搜索 / 贝叶斯优化 (Optuna) |
-| **压力测试** | Monte Carlo 模拟 |
-| **可视化** | Matplotlib / Plotly |
-| **报告生成** | Jinja2 / Markdown |
+| **文件数** | 113 |
+| **代码行数** | 26,000+ |
+| **策略数** | 24 |
+| **因子数** | 130+ |
+| **文档数** | 15+ |
+| **示例数** | 10+ |
 
 ---
 
-## 🚀 开发路线图
+## ⚠️ 重要声明
 
-### Phase 1: 核心框架 ✅
-- [x] 项目初始化
-- [x] 策略基类设计
-- [x] 回测引擎核心
-- [x] 数据管理器
+### 学习用途
 
-### Phase 2: 策略模板 ✅
-- [x] 双均线策略
-- [x] 海龟交易策略
-- [x] 通道突破策略
-- [x] MACD 趋势策略
-- [x] 布林带均值回归
-- [x] RSI 均值回归
-- [x] KDJ 震荡策略
+**本项目仅供学习和研究使用**
 
-### Phase 3: 参数优化 ✅
-- [x] 网格搜索
-- [x] 贝叶斯优化 (Optuna)
+- ✅ 学习量化策略开发方法
+- ✅ 理解因子/ML/套利逻辑
+- ✅ 模拟盘验证策略
+- ❌ **不建议直接实盘交易**
 
-### Phase 4: 组合分析 ✅
-- [x] 多策略组合
-- [x] 相关性分析
-- [x] 权重优化
+### 风险提示
 
-### Phase 5: 压力测试 ✅
-- [x] Monte Carlo 测试
-- [x] 稳健性评分
+1. **回测≠实盘**
+   - 回测收益≠实盘收益
+   - 成本估算是理想的
+   - 实盘有心理因素
 
-### Phase 6: 报告生成 ✅
-- [x] 文本报告
-- [x] HTML 报告
-- [x] Markdown 报告
+2. **需要验证流程**
+   ```
+   回测 → 样本外验证 → 模拟盘 (3-6 月) → 小资金实盘 (1-5 万)
+   ```
 
-### Phase 7: 机器学习 (可选)
-- [ ] ML 因子挖掘
-- [ ] 特征工程
-- [ ] 模型部署
-
-### Phase 8: Web 界面 (可选)
-- [ ] FastAPI 后端
-- [ ] Vue3 前端
-- [ ] 实时回测进度
-- [ ] 交互式图表
+3. **做好亏损准备**
+   - 量化交易有风险
+   - 可能亏光本金
+   - 持续学习是关键
 
 ---
 
-## 📝 使用场景
+## 🎯 开发路线图
 
-### 场景 1：快速验证策略创意
+### 已完成 (v1.0)
 
-```python
-from src import StrategyFactory, BacktestEngine
+- ✅ 24 个策略模板
+- ✅ 130+ 因子库
+- ✅ ML/DL集成
+- ✅ 风控系统
+- ✅ 真实回测
+- ✅ 样本外验证
+- ✅ 模拟账户
 
-factory = StrategyFactory()
-strategy = factory.create("MyNewStrategy", param1=10, param2=0.5)
+### 计划中 (v2.0)
 
-engine = BacktestEngine(strategy)
-results = engine.run(data, "CU.SHF")
-
-if results.sharpe_ratio > 1.5:
-    print("✅ 策略有效，继续优化！")
-else:
-    print("❌ 策略无效，调整思路")
-```
-
-### 场景 2：参数优化
-
-```python
-from src import Optimizer
-
-optimizer = Optimizer(strategy="DualMA")
-best_params = optimizer.bayesian_optimize(
-    param_bounds={"fast_ma": (5, 30), "slow_ma": (20, 100)},
-    n_iterations=50
-)
-print(f"最优参数：{best_params}")
-```
-
-### 场景 3：策略组合
-
-```python
-from src import PortfolioAnalyzer
-
-analyzer = PortfolioAnalyzer()
-analyzer.add_strategy("DualMA", results_ma)
-analyzer.add_strategy("Turtle", results_turtle)
-
-optimal_weights = analyzer.optimize_weights(method="sharpe")
-print(f"最优配置：{optimal_weights}")
-```
-
-### 场景 4：压力测试
-
-```python
-from src import MonteCarloEngine
-
-mc = MonteCarloEngine(strategy, num_simulations=500)
-result = mc.run(data, "RB.SHF")
-
-if result.is_robust():
-    print("✅ 策略稳健，可以实盘")
-else:
-    print("❌ 策略不稳定，需要优化")
-```
+- ⏳ 更多历史数据 (3-5 年)
+- ⏳ 实时行情接入
+- ⏳ 实盘接口（谨慎）
+- ⏳ Web 界面
+- ⏳ 策略优化器
 
 ---
 
-## ⚠️ 注意事项
+## 🤝 贡献指南
 
-1. **回测 ≠ 实盘** - 回测结果仅供参考，实盘需考虑滑点/冲击成本/流动性
-2. **过拟合风险** - 参数优化后务必进行 Monte Carlo 测试
-3. **数据质量** - 确保使用复权数据，注意除权除息
-4. **交易成本** - 手续费和滑点对高频策略影响显著
+欢迎贡献代码、报告问题、提出建议！
 
----
-
-## 📄 License
-
-MIT License
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
 
 ---
 
-## 👨‍💻 作者
+## 📄 许可证
 
-**Coral** - 私募基金从业者
-
-> **理念**：好的工具让策略研发效率提升 10 倍。
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
 ---
 
-*最后更新：2026-04-09*
+## 📞 联系方式
+
+- **GitHub**: [@ZZZ12-ry](https://github.com/ZZZ12-ry)
+- **Issues**: [问题反馈](https://github.com/ZZZ12-ry/quant-strategy-factory/issues)
+- **Discussions**: [讨论区](https://github.com/ZZZ12-ry/quant-strategy-factory/discussions)
+
+---
+
+## 🙏 致谢
+
+感谢以下开源项目：
+
+- [AKShare](https://akshare.akfamily.xyz) - 财经数据接口
+- [Tushare](https://tushare.pro) - 财经数据
+- [Scikit-learn](https://scikit-learn.org) - 机器学习
+- [XGBoost](https://xgboost.ai) - 梯度提升树
+- [PyTorch](https://pytorch.org) - 深度学习
+
+---
+
+## 📈 项目统计
+
+![Stars](https://img.shields.io/github/stars/ZZZ12-ry/quant-strategy-factory?style=social)
+![Forks](https://img.shields.io/github/forks/ZZZ12-ry/quant-strategy-factory?style=social)
+![Issues](https://img.shields.io/github/issues/ZZZ12-ry/quant-strategy-factory)
+![Last Commit](https://img.shields.io/github/last-commit/ZZZ12-ry/quant-strategy-factory)
+
+---
+
+**最后更新**: 2026-04-16  
+**版本**: v1.0  
+**状态**: 框架完整，可以开始学习使用
+
+---
+
+> **量化是终身事业，持续学习，谨慎交易！** 📚
