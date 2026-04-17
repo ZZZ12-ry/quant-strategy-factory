@@ -14,10 +14,21 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 # 页面配置
 st.set_page_config(
     page_title="量化策略工厂",
-    page_icon="chart_with_upwards_trend",
+    page_icon="📈",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items=None
 )
+
+# 隐藏 Streamlit 默认菜单和按钮
+st.markdown("""
+<style>
+    #MainMenu {visibility: hidden;}
+    .stDeployButton {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+</style>
+""", unsafe_allow_html=True)
 
 # 自定义 CSS
 st.markdown("""
@@ -85,9 +96,9 @@ def create_sample_data():
     strategy_returns = np.random.randn(n_days) * 0.02 + 0.0005
     benchmark_returns = np.random.randn(n_days) * 0.015 + 0.0003
     
-    # 累计收益
-    strategy_cum = (1 + strategy_returns).cumprod() - 1
-    benchmark_cum = (1 + benchmark_returns).cumprod() - 1
+    # 累计收益（转换为 pandas Series）
+    strategy_cum = pd.Series((1 + strategy_returns).cumprod() - 1)
+    benchmark_cum = pd.Series((1 + benchmark_returns).cumprod() - 1)
     
     # 回撤
     strategy_peak = strategy_cum.cummax()
@@ -131,6 +142,7 @@ def display_metrics(metrics):
 def plot_cumulative_returns(df):
     """绘制累计收益曲线"""
     chart_data = df[['date', 'strategy', 'benchmark']].set_index('date')
+    chart_data.columns = ['策略收益', '基准收益']
     
     st.subheader("累计收益对比")
     st.line_chart(chart_data, use_container_width=True)
@@ -139,6 +151,7 @@ def plot_cumulative_returns(df):
 def plot_drawdown(df):
     """绘制回撤曲线"""
     drawdown_data = df[['date', 'drawdown']].set_index('date')
+    drawdown_data.columns = ['回撤']
     
     st.subheader("回撤曲线")
     st.area_chart(drawdown_data, color="#d62728", use_container_width=True)
@@ -150,8 +163,8 @@ def plot_monthly_returns(monthly_returns):
     
     # 转换为热力图格式
     monthly_df = pd.DataFrame({
-        'month': monthly_returns.index.astype(str),
-        'return': monthly_returns.values
+        '月份': monthly_returns.index.astype(str),
+        '收益': monthly_returns.values
     })
     
     # 创建热力图
@@ -190,6 +203,7 @@ def main():
         page = st.radio(
             "选择页面",
             ["策略回测", "特征工程", "模型训练", "IC 分析", "关于"],
+            labels=["策略回测", "特征工程", "模型训练", "IC 分析", "关于"],
             label_visibility="collapsed"
         )
         
@@ -286,13 +300,19 @@ def render_backtest_page():
                 '数量': np.random.randint(1, 10, 12),
                 '盈亏': np.random.uniform(-5000, 8000, 12)
             })
-            st.dataframe(trade_record, use_container_width=True)
+            st.dataframe(trade_record, use_container_width=True, column_config={
+                "日期": "日期",
+                "方向": "方向",
+                "价格": "价格",
+                "数量": "数量",
+                "盈亏": "盈亏"
+            })
             
             st.session_state['run_demo'] = False
     
     else:
         # 空状态
-        st.info("点击"运行回测"按钮开始策略回测，或先配置策略参数")
+        st.info("点击【运行回测】按钮开始策略回测，或先配置策略参数")
 
 
 def render_feature_page():
